@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #foodItems {
+            margin-bottom: 20px;
+        }
+        #imageCont {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Food Ordering</h1>
+    <div id="status"></div>
+
+    <div id="imageCont"></div>
+
+    <div id="foodItems">
+    <label>Burger</label>
+    <input type="checkbox" value = "Burger">
+
+    <label>Fries</label>
+    <input type="checkbox" value ="Fries">
+
+    <label>Pasta</label>
+    <input type="checkbox" value ="Pasta">
+    
+    </div>
+    <button onclick="orderFood()">Order Food</button>
+</body>
+<script>
+    
+    let foodItems = document.querySelectorAll("#foodItems input")
+    let status = document.querySelector("#status");
+
+    function orderFood() {
+    let items = Array.from(foodItems);
+    let h1 = document.createElement("h1");
+    h1.innerText = "Food is being ordered";
+    status.append(h1);
+
+    promiseCreate(items).then((res)=>{
+    console.log(res);
+    h1.innerText = `${res} has been ordered successfully.`
+    })
+    
+    }
+    
+    
+    function promiseCreate(items){
+       let imageCont = document.querySelector("#imageCont")
+       let images = [
+        {
+            name : "Burger",
+            url : "https://richmeats.capetown/wp-content/uploads/2017/03/Cheese-Burger-1.jpg"
+        },
+
+        {
+            name : "Fries",
+            url : "https://tse2.mm.bing.net/th?id=OIP.XeT3Q7d34b2Ltdax5wK9_wHaHl&pid=Api&P=0&h=180"
+        },
+
+        {
+            name : "Pasta",
+            url : "https://tse3.mm.bing.net/th?id=OIP.goegMDVwEd-bANzfo611GQHaJC&pid=Api&P=0&h=180"
+        }
+       ]   
+        
+       let checkedItems = items.filter((ele)=>{
+            return ele.checked
+        })
+
+
+       let imageFilter = images.filter((ele)=>{
+          return ele.name == checkedItems[0].value
+       })
+    
+
+       let promise = new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+       let image = document.createElement("img");
+       image.src = imageFilter[0].url;
+       image.style.width = "200px"
+       image.style.padding = "15px"
+       imageCont.append(image);
+
+                resolve(checkedItems[0].value);
+            },2000);
+        })
+        return promise
+    }
+
+    console.log(foodItems)
+</script>
+</html>
