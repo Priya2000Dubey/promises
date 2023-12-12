@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Simulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .payment-container {
+      text-align: center;
+      display: none;
+    }
+
+    #processing {
+      color: orange;
+    }
+
+    #success {
+      color: green;
+    }
+
+    #failure {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="payment-container" id="processing">
+    <h1>Processing Payment...</h1>
+  </div>
+
+  <div class="payment-container" id="success">
+    <h1>Payment Successful!</h1>
+  </div>
+
+  <div class="payment-container" id="failure">
+    <h1>Payment Failed</h1>
+  </div>
+
+  <script>
+    function simulatePayment() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const isPaymentSuccessful = Math.random() < 0.5;
+
+          if (isPaymentSuccessful) {
+            resolve('Payment successful');
+          } else {
+            reject('Payment failed');
+          }
+        }, 2000);
+      });
+    }
+
+    function showUIState(state) {
+      const states = ['processing', 'success', 'failure'];
+
+      states.forEach((s) => {
+        document.getElementById(s).style.display = s === state ? 'block' : 'none';
+      });
+    }
+
+    showUIState('processing');
+
+    simulatePayment()
+      .then((result) => {
+        showUIState('success');
+        console.log(result);
+      })
+      .catch((error) => {
+        showUIState('failure');
+        console.error(error);
+      });
+  </script>
+</body>
+</html>
+  
